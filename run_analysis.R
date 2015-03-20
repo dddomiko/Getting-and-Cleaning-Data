@@ -3,6 +3,7 @@
 # Import packages
 library(data.table)
 library(reshape2)
+library(knitr)
 
 # Working directory
 wd <- getwd()
@@ -101,14 +102,14 @@ data <- data.table(melt(data, key(data)))
 
 data[,activity := as.factor(activity)]
 
-# create new variables for hidden information in the feeature description.
+# create new variables for hidden information in the feature description.
 # (see http://vita.had.co.nz/papers/tidy-data.pdf)
 
 # Domain signals (t = Time; f = Frequency)
 data[, domain := factor(ifelse(substr(variable,1,1) == "t", "Time", 
                                ifelse(substr(variable,1,1) == "f", "Frequency", NA)))]
 
-# Measuring instrufmen (Acc = Accelerometer; Gyro = Gyroscope)
+# Measuring instrument (Acc = Accelerometer; Gyro = Gyroscope)
 data[, instrument := factor(ifelse(grepl("Acc", variable), "Accelerometer", 
                                    ifelse(grepl("Gyro", variable), "Gyroscope", NA)))]
 
@@ -145,10 +146,14 @@ save(data,file=file.path(wd,"data","data.RData"))
 
 
 setkey(data, subject, activity, domain, instrument, signal, 
-       jerk, magnitude, measure)
+       jerk, magnitude, measure, axis)
 data.tidy <- data[, list(count = .N, avg = mean(value)), by = key(data)]
 
 # save data
 save(data.tidy,file=file.path(wd,"data","data_tidy.RData"))
+write.table(data.tidy,file=file.path(wd,"data","data_tidy.txt"), 
+            row.name = FALSE, sep = ";")
 
+### CodeBook ###################################################################
 
+knit("CodeBook.Rmd", output = "CodeBook.md")

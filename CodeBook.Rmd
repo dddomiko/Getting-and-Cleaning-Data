@@ -1,0 +1,54 @@
+CodeBook
+========
+This Codebook was generated on `r as.character(Sys.time())`.
+
+Overview
+--------
+
+Variable name | Description
+--------------|------------
+subject       | Subject ID of the 30 volunteers
+activity      | Activity name ()
+domain        | Time domain signal or frequency domain signal (Time or Freq)
+instrument    | Measuring instrument (Accelerometer or Gyroscope)
+signal        | Acceleration signal (Body or Gravity)
+jerk          | Jerk signal
+magnitude     | Magnitude of the signals
+axis          | 3-axial signals in the X, Y and Z directions (X, Y, or Z)
+measure       | Measure (Mean or SD = standard deviation)
+count         | Count of data points
+avg           | Average of each variable for each activity and each subject
+
+Dataset structure
+-----------------
+
+```{r}
+str(data.tidy)
+```
+
+Dataset excerpt
+---------------
+
+```{r}
+data.tidy
+```
+
+Summary of variables
+--------------------
+
+```{r}
+summary(data.tidy)
+```
+
+Data preparation
+================
+
+1. Download zip-file from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
+2. Unzip file
+3. Merge the training and test sets to create `one` dataset (`subject_test.txt`,`X_test.txt`,`y_test.txt`,`subject_train.txt`,`X_train.txt`,`y_train.txt`)
+4. Name the columns (`features.txt`)
+5. Extract only the measurements on the `mean` and `standard deviation` for each measurement
+6. Label the target variable with the activity names (`activity_labels.txt`)
+7. Reshape data from wide to long format
+8. Create new variables for hidden information in the feature description
+9. Calculate the average of each variable for each activity and each subject
